@@ -7,7 +7,7 @@
 * Cronjob which is executed once a day (same image, cronjob parameter)
 
 Solution:
-* Chart.yaml
+* HelmCharts/Chart.yaml
 
 ## Task 2: Create a CloudFormation Template
 ### Should contain:
@@ -19,4 +19,4 @@ Solution:
 * Internet Gateway (for public subnets)
 
 Solution:
-* Template.yaml
+* CloudformationTemplates/Template.yaml

@@ -1,0 +1,39 @@
+Description: 6 Subnets (3 Public/3 Private), NAT Gateway (private subnets), Egress Only Internet Gateway (private subnets) , Internet Gateway (public subnets)
+Resources:
+  PublicSubnet1:
+    Type: "AWS::EC2::Subnet"
+    Properties: {}
+    Metadata: {}
+  PublicSubnet2:
+    Type: "AWS::EC2::Subnet"
+    Properties: {} 
+    Metadata: {}
+  PublicSubnet3:
+    Type: "AWS::EC2::Subnet"
+    Properties: {} 
+    Metadata: {}
+  PrivateSubnet1:
+    Type: "AWS::EC2::Subnet"
+    Properties: {} 
+    Metadata: {}
+  PrivateSubnet2:
+    Type: "AWS::EC2::Subnet"
+    Properties: {}
+    Metadata: {}
+  PrivateSubnet3:
+    Type: "AWS::EC2::Subnet"
+    Properties: {}
+    Metadata: {}
+  PrivateGateway1:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata: {}
+  PublicGateway1:
+    Type: 'AWS::EC2::InternetGateway'
+    Properties: {}
+    Metadata: {}
+  NATGateway:
+    Type: 'AWS::EC2::NatGateway'
+    Properties: {}
+    Metadata: {}
+
