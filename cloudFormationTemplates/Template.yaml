@@ -1,39 +1,148 @@
-Description: 6 Subnets (3 Public/3 Private), NAT Gateway (private subnets), Egress Only Internet Gateway (private subnets) , Internet Gateway (public subnets)
+Description: 1 VPC, 6 Subnets (3 Public (/23?) /3 (/18?) Private), NAT Gateway (private subnets), Egress Only Internet Gateway (private subnets) , Internet Gateway (public subnets)
+
+Parameters:
+  EnvironmentName:
+    Description: ENV Name added to resource names
+    Type: String
+  
+  VpcCIDR:
+    Description: IP Range for VPC
+    Type: String
+    Default: 10.192.0.0/16
+
+  PublicSubnetCIDR:
+    Description: IP Range for public subnet in AZ1
+    Type: String
+    Default: 10.192.10.0/24
+  
+  PublicSubnet2CIDR:
+    Description: IP Range for public subnet in AZ2
+    Type: String
+    Default: 10.192.11.0/24
+ 
+  PublicSubnet3CIDR:
+    Description: IP Range for public subnet in AZ3
+    Type: String
+    Default: 10.192.12.0/24
+
+  PrivateSubnetCIDR:
+    Description: IP Range for private subnet in AZ1
+    Type: String
+    Default: 10.192.20.0/24
+  
+  PrivateSubnet2CIDR:
+    Description: IP Range for private subnet in AZ2
+    Type: String
+    Default: 10.192.21.0/24
+
+  PrivateSubnet3CIDR:
+    Description: IP Range for private subnet in AZ3
+    Type: String
+    Default: 10.192.22.0/24
+
 Resources:
+  VPC:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: !Ref VpcCIDR 
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+    Metadata: {}
+
   PublicSubnet1:
     Type: "AWS::EC2::Subnet"
-    Properties: {}
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 0, !GetAZs '' ]
+      CidrBlock: !Ref PublicSubnetCIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
     Metadata: {}
+
   PublicSubnet2:
     Type: "AWS::EC2::Subnet"
-    Properties: {} 
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 1, !GetAZs '']
+      CidrBlock: !Ref PublicSubnet2CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
     Metadata: {}
+  
   PublicSubnet3:
     Type: "AWS::EC2::Subnet"
-    Properties: {} 
+    Properties:
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [ 2, !GetAZs '']
+      CidrBlock: !Ref PublicSubnet3CIDR
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
+
     Metadata: {}
+  
   PrivateSubnet1:
     Type: "AWS::EC2::Subnet"
     Properties: {} 
     Metadata: {}
+  
   PrivateSubnet2:
     Type: "AWS::EC2::Subnet"
     Properties: {}
     Metadata: {}
+  
   PrivateSubnet3:
     Type: "AWS::EC2::Subnet"
     Properties: {}
     Metadata: {}
+  
   PrivateGateway1:
     Type: 'AWS::EC2::InternetGateway'
-    Properties: {}
+    Properties: 
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
     Metadata: {}
+
+  PrivateInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref PrivateGateway1
+      VpcId: !Ref VPC
+    Metadata: {}
+  
   PublicGateway1:
     Type: 'AWS::EC2::InternetGateway'
-    Properties: {}
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
     Metadata: {}
-  NATGateway:
+  
+  PublicGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref PublicGateway1
+      VpcId: !Ref VPC
+    Metadata: {}
+  
+  NatGatewayEIP:
+    Type: AWS::EC2::EIP
+    DependsOn: PublicGatewayAttachment
+    Properties:
+      Domain: vpc
+    Metadata: {}
+
+  NatGateway:
     Type: 'AWS::EC2::NatGateway'
-    Properties: {}
+    Properties:
+      AllocationId: !GetAtt NatGatewayEIP.AllocationId
+      SubnetId: !Ref PublicSubnet1
     Metadata: {}
 
