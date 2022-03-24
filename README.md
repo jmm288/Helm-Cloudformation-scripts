@@ -10,6 +10,7 @@ Solution:
 * HelmCharts/
 
 ### Comments:
+* I put something together with what was requested but couldn't exactly figure out the way you wanted it with the time I had. I think there was an easier, expected way to create the deployments from one deployment file and then dynamically pass the launch parameters, but I wasn't sure how to do it.
 
 ## Task 2: Create a CloudFormation Template
 ### Should contain:
@@ -24,4 +25,4 @@ Solution:
 * CloudformationTemplates/Template.yaml
 
 ### Comments: 
-* I wasn't exactly sure what to do with the /23 /18, I understood they likely had something to do with the slash notation of the expected range of IP addresses of each subnet? But I wasn't sure where to put the information.
+* I wasn't exactly sure what to do with the /23 /18, I understood they likely had something to do with the slash notation of the expected range of IP addresses of each subnet? But I wasn't sure where to put the information, Networking is not my expertise.
