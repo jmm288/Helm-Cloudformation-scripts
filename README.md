@@ -7,7 +7,9 @@
 * Cronjob which is executed once a day (same image, cronjob parameter)
 
 Solution:
-* HelmCharts/Chart.yaml
+* HelmCharts/
+
+### Comments:
 
 ## Task 2: Create a CloudFormation Template
 ### Should contain:
@@ -20,3 +22,6 @@ Solution:
 
 Solution:
 * CloudformationTemplates/Template.yaml
+
+### Comments: 
+* I wasn't exactly sure what to do with the /23 /18, I understood they likely had something to do with the slash notation of the expected range of IP addresses of each subnet? But I wasn't sure where to put the information.

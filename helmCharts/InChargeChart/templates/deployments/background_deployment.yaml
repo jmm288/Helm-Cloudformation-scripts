@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-background-deployment
+  labels:
+    app: nginx-background
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-background
+  template:
+    metadata:
+      labels:
+        app: nginx-background
+    spec:
+      containers:
+      - name: nginx-background
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
